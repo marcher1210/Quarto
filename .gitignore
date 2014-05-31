@@ -9,3 +9,4 @@ manifest.mf
 *.war
 *.ear
 /build/
+/dist/
