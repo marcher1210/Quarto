@@ -4,7 +4,7 @@
  */
 package dk.marcher.quarto.ui;
 
-import dk.marcher.quarto.logic.*;
+import dk.marcher.quarto.controller.QuartoController;
 import dk.marcher.quarto.ui.listeners.*;
 
 /**
@@ -13,46 +13,26 @@ import dk.marcher.quarto.ui.listeners.*;
  */
 public class GamePanel extends javax.swing.JPanel {
 
-    private final PoolListener poolListener;
-    private final BoardListener boardListener;
-    private int chosenPiece = -1;
-    private Board board;
+    private final QuartoController quartoController;
 
     /**
      * Creates new form GamePanel
      */
     public GamePanel() {
-        this.poolListener = new PoolListener() {
-            @Override
-            public void pieceChosen(int piece) {
-                System.out.println("Piece " + piece + " chosen.");
-                if (chosenPiece > -1) {
-                    return;
-                }
-                chosenPiece = piece;
-                poolPanel.removePiece(piece);
-                playerPanel.setPieceToPlace(piece);
-            }
-        };
-        this.boardListener = new BoardListener() {
-            @Override
-            public void squareChosen(int x, int y) {
-                System.out.println("Square [" + x + "," + y + "] chosen.");
-                if (!board.validMove(x, y, chosenPiece)) {
-                    return;
-                }
-                board.setPiece(x, y, chosenPiece);
-                boardPanel.setPiece(x, y, chosenPiece);
-                chosenPiece = -1;
-                playerPanel.removePieceToPlace();
-                if (board.hasQuarto()) {
-                    System.out.println("QUARTO!!");
-                    boardPanel.markQuarto(board.quartoSquares());
-                }
-            }
-        };
+        quartoController = new QuartoController(this);
         initComponents();
-        newGame();
+    }
+
+    public BoardPanel getBoardPanel() {
+        return boardPanel;
+    }
+
+    public PlayerPanel getPlayerPanel() {
+        return playerPanel;
+    }
+
+    public PoolPanel getPoolPanel() {
+        return poolPanel;
     }
 
     /**
@@ -64,8 +44,18 @@ public class GamePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        poolPanel = new dk.marcher.quarto.ui.PoolPanel(poolListener);
-        boardPanel = new dk.marcher.quarto.ui.BoardPanel(boardListener);
+        poolPanel = new dk.marcher.quarto.ui.PoolPanel(new PoolListener() {
+            @Override
+            public void pieceChosen(int piece) {
+                quartoController.pieceChosen(piece);
+            }
+        });
+        boardPanel = new dk.marcher.quarto.ui.BoardPanel(new BoardListener() {
+            @Override
+            public void squareChosen(int x, int y) {
+                quartoController.squareChosen(x,y);
+            }
+        });
         playerPanel = new dk.marcher.quarto.ui.PlayerPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -79,9 +69,8 @@ public class GamePanel extends javax.swing.JPanel {
     private dk.marcher.quarto.ui.PoolPanel poolPanel;
     // End of variables declaration//GEN-END:variables
 
-    final void newGame() {
-        board = new Board();
-        poolPanel.refillPool();
-        boardPanel.clearBoard();
+    void newGame() {
+        quartoController.newGame();
     }
+
 }

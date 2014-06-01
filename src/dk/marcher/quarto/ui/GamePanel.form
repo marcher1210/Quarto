@@ -18,7 +18,7 @@
   <SubComponents>
     <Component class="dk.marcher.quarto.ui.PoolPanel" name="poolPanel">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new dk.marcher.quarto.ui.PoolPanel(poolListener)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new dk.marcher.quarto.ui.PoolPanel(new PoolListener() {&#xa;            @Override&#xa;            public void pieceChosen(int piece) {&#xa;                quartoController.pieceChosen(piece);&#xa;            }&#xa;        })"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -28,7 +28,7 @@
     </Component>
     <Component class="dk.marcher.quarto.ui.BoardPanel" name="boardPanel">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new dk.marcher.quarto.ui.BoardPanel(boardListener)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new dk.marcher.quarto.ui.BoardPanel(new BoardListener() {&#xa;            @Override&#xa;            public void squareChosen(int x, int y) {&#xa;                quartoController.squareChosen(x,y);&#xa;            }&#xa;        })"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
