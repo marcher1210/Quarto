@@ -4,7 +4,9 @@
  */
 package dk.marcher.quarto.ui;
 
+import java.awt.Color;
 import javax.swing.ImageIcon;
+import javax.swing.border.Border;
 
 /**
  *
@@ -12,21 +14,66 @@ import javax.swing.ImageIcon;
  */
 public class PlayerPanel extends javax.swing.JPanel {
 
+    private Color turnColor = new Color(0, 153, 0);
+    private Color emptyColor = new Color(0, 0, 0);
+    private Border turnBorder = javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(turnColor), javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    private Border emptyBorder = javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5);
+    private Color winnerColor = new Color(0, 153, 0);
+    private Color loserColor = new Color(153, 0, 0);
+
     /**
      * Creates new form PlayerPanel
      */
     public PlayerPanel() {
         initComponents();
+        resetTurn();
     }
 
     public void setPieceToPlace(int piece) {
         pieceToPlaceLabel.setIcon(new ImageIcon(PieceUI.getPieceImage(piece)));
     }
-    
+
     public void removePieceToPlace() {
         pieceToPlaceLabel.setIcon(new ImageIcon(PieceUI.getBlankImage()));
     }
-    
+
+    public void resetTurn() {
+        player1PlaceLabel.setBorder(emptyBorder);
+        player1SelectLabel.setBorder(emptyBorder);
+        player2PlaceLabel.setBorder(emptyBorder);
+        player2SelectLabel.setBorder(emptyBorder);
+        player1PlaceLabel.setForeground(emptyColor);
+        player1SelectLabel.setForeground(emptyColor);
+        player2PlaceLabel.setForeground(emptyColor);
+        player2SelectLabel.setForeground(emptyColor);
+        
+        player1Winner.setText("");
+        player2Winner.setText("");
+    }
+
+    public void setTurn(boolean isPlayer1, boolean mustPlace) {
+        resetTurn();
+        player1PlaceLabel.setBorder((isPlayer1 && mustPlace) ? turnBorder : emptyBorder);
+        player1PlaceLabel.setForeground((isPlayer1 && mustPlace) ? turnColor : emptyColor);
+
+        player1SelectLabel.setBorder((isPlayer1 && !mustPlace) ? turnBorder : emptyBorder);
+        player1SelectLabel.setForeground((isPlayer1 && !mustPlace) ? turnColor : emptyColor);
+
+        player2PlaceLabel.setBorder((!isPlayer1 && mustPlace) ? turnBorder : emptyBorder);
+        player2PlaceLabel.setForeground((!isPlayer1 && mustPlace) ? turnColor : emptyColor);
+
+        player2SelectLabel.setBorder((!isPlayer1 && !mustPlace) ? turnBorder : emptyBorder);
+        player2SelectLabel.setForeground((!isPlayer1 && !mustPlace) ? turnColor : emptyColor);
+    }
+
+    public void setWinner(boolean isPlayer1) {
+        resetTurn();
+        player1Winner.setText(isPlayer1 ? "Winner" : "Loser");
+        player1Winner.setForeground(isPlayer1 ? winnerColor : loserColor);
+        player2Winner.setText(!isPlayer1 ? "Winner" : "Loser");
+        player2Winner.setForeground(!isPlayer1 ? winnerColor : loserColor);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,48 +82,114 @@ public class PlayerPanel extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        player1Winner = new javax.swing.JLabel();
+        player2Winner = new javax.swing.JLabel();
+        player1Label = new javax.swing.JLabel();
+        player2Label = new javax.swing.JLabel();
+        player1PlaceLabel = new javax.swing.JLabel();
+        player1SelectLabel = new javax.swing.JLabel();
+        player2PlaceLabel = new javax.swing.JLabel();
+        player2SelectLabel = new javax.swing.JLabel();
         pieceToPlaceLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
 
-        setLayout(new java.awt.GridLayout(1, 2));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.setBackground(new java.awt.Color(51, 255, 0));
+        player1Winner.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        player1Winner.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        player1Winner.setText("Winner");
+        player1Winner.setPreferredSize(new java.awt.Dimension(60, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
+        add(player1Winner, gridBagConstraints);
 
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 241, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 118, Short.MAX_VALUE)
-        );
+        player2Winner.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        player2Winner.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        player2Winner.setText("Loser");
+        player2Winner.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        player2Winner.setPreferredSize(new java.awt.Dimension(60, 20));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 0);
+        add(player2Winner, gridBagConstraints);
 
-        add(jPanel1);
+        player1Label.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        player1Label.setText("Player 1:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 30);
+        add(player1Label, gridBagConstraints);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        player2Label.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        player2Label.setText("Player 2:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 30);
+        add(player2Label, gridBagConstraints);
 
-        pieceToPlaceLabel.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
-        pieceToPlaceLabel.setMaximumSize(new java.awt.Dimension(45, 45));
-        pieceToPlaceLabel.setMinimumSize(new java.awt.Dimension(45, 45));
-        pieceToPlaceLabel.setPreferredSize(new java.awt.Dimension(45, 45));
-        pieceToPlaceLabel.setSize(new java.awt.Dimension(45, 45));
-        jPanel2.add(pieceToPlaceLabel, java.awt.BorderLayout.CENTER);
+        player1PlaceLabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        player1PlaceLabel.setText("Place");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(player1PlaceLabel, gridBagConstraints);
 
-        jLabel1.setText("Piece to Place");
-        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        jPanel2.add(jLabel1, java.awt.BorderLayout.WEST);
+        player1SelectLabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        player1SelectLabel.setText("Select");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(player1SelectLabel, gridBagConstraints);
 
-        add(jPanel2);
+        player2PlaceLabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        player2PlaceLabel.setText("Place");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(player2PlaceLabel, gridBagConstraints);
+
+        player2SelectLabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
+        player2SelectLabel.setText("Select");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        add(player2SelectLabel, gridBagConstraints);
+
+        pieceToPlaceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pieceToPlaceLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        pieceToPlaceLabel.setMaximumSize(new java.awt.Dimension(80, 80));
+        pieceToPlaceLabel.setMinimumSize(new java.awt.Dimension(80, 80));
+        pieceToPlaceLabel.setPreferredSize(new java.awt.Dimension(80, 80));
+        pieceToPlaceLabel.setSize(new java.awt.Dimension(80, 80));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 50, 0, 0);
+        add(pieceToPlaceLabel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel pieceToPlaceLabel;
+    private javax.swing.JLabel player1Label;
+    private javax.swing.JLabel player1PlaceLabel;
+    private javax.swing.JLabel player1SelectLabel;
+    private javax.swing.JLabel player1Winner;
+    private javax.swing.JLabel player2Label;
+    private javax.swing.JLabel player2PlaceLabel;
+    private javax.swing.JLabel player2SelectLabel;
+    private javax.swing.JLabel player2Winner;
     // End of variables declaration//GEN-END:variables
 }
